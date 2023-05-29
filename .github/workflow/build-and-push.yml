@@ -1,9 +1,9 @@
 name: build and push code
 on:
-  push:
+  pull_request:
     branches:
-      - practice-build
-#      - step2
+#      - practice-build
+      - step1
 jobs:
   git-push:
     name: build and push
