@@ -1,0 +1,32 @@
+name: build and push code
+on:
+  pull_request:
+    branches:
+#      - practice-build
+      - step1
+jobs:
+  git-push:
+    name: build and push
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 11
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Execute Gradle build
+        run: ./gradlew build
+
+      - uses: cpina/github-action-push-to-another-repository@main
+        env:
+          SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+        with:
+          source-directory: build/libs
+          destination-github-username: 'kyY00n'
+          destination-repository-name: 'jwp-shopping-order-jar'
+          user-email: dev.kayoung@gmail.com
+          target-branch: practice-build
+          # target-branch: step2
